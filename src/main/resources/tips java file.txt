@@ -1,0 +1,31 @@
+Or, if you insist on making work for yourself...
+
+try (FileOutputStream fos = new FileOutputStream("pathname")) {
+   fos.write(myByteArray);
+   //fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
+}
+
+---
+
+Then use the Base64 static methods as follows:
+
+byte[] encodedBytes = Base64.getEncoder().encode("Test".getBytes());
+System.out.println("encodedBytes " + new String(encodedBytes));
+byte[] decodedBytes = Base64.getDecoder().decode(encodedBytes);
+System.out.println("decodedBytes " + new String(decodedBytes));
+
+---
+
+If you directly want to encode string and get the result as encoded string you can use this.
+
+String encodeBytes = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
+
+---
+
+File file;
+// ...(file is initialised)...
+byte[] fileContent = Files.readAllBytes(file.toPath());
+
+OR
+
+byte[] array = Files.readAllBytes(Paths.get("/path/to/file"));

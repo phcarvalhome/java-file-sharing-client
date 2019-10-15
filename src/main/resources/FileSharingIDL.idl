@@ -1,0 +1,47 @@
+struct User;
+struct SharedFile;
+struct SharedFileList;
+
+module com {
+
+    module phcarvalho {
+
+        module model {
+
+            module corba {
+
+                struct User {
+                    string name;
+                    string host;
+                    short port;
+                };
+
+                struct SharedFile {
+                    User user;
+                    string name;
+                    string extension;
+                    string content;
+                };
+
+                struct SharedFileList {
+                    sequence<SharedFile> sharedFileList;
+                };
+
+                module client {
+
+                    interface ClientService {
+                        SharedFile downloadSharedFile(in string name);
+                    };
+                };
+
+                module server {
+
+                    interface ServerService {
+                        void sendSharedFileList(in SharedFileList sharedFileList);
+                        SharedFileList search(in string name);
+                    };
+                };
+            };
+        };
+    };
+};

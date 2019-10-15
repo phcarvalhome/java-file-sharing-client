@@ -2,7 +2,7 @@ package com.phcarvalho.view;
 
 import com.phcarvalho.controller.DownloadedFileController;
 import com.phcarvalho.dependencyfactory.DependencyFactory;
-import com.phcarvalho.filesharing.SharedFile;
+import com.phcarvalho.model.corba.SharedFile;
 import com.phcarvalho.view.util.DialogUtil;
 
 import javax.swing.*;

@@ -2,7 +2,7 @@ package com.phcarvalho.view;
 
 import com.phcarvalho.controller.ConnectionController;
 import com.phcarvalho.dependencyfactory.DependencyFactory;
-import com.phcarvalho.filesharing.User;
+import com.phcarvalho.model.corba.User;
 import com.phcarvalho.view.util.DialogUtil;
 
 import javax.swing.*;

@@ -1,7 +1,7 @@
 package com.phcarvalho.controller;
 
-import com.phcarvalho.filesharing.User;
 import com.phcarvalho.model.ConnectionModel;
+import com.phcarvalho.model.corba.User;
 import com.phcarvalho.view.ConnectionView;
 
 import java.rmi.RemoteException;

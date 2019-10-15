@@ -1,7 +1,7 @@
 package com.phcarvalho.model;
 
 import com.phcarvalho.controller.DownloadedFileController;
-import com.phcarvalho.filesharing.SharedFile;
+import com.phcarvalho.model.corba.SharedFile;
 
 import javax.swing.*;
 

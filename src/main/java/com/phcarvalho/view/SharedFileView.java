@@ -2,7 +2,8 @@ package com.phcarvalho.view;
 
 import com.phcarvalho.controller.SharedFileController;
 import com.phcarvalho.dependencyfactory.DependencyFactory;
-import com.phcarvalho.filesharing.SharedFile;
+import com.phcarvalho.model.corba.SharedFile;
+import com.phcarvalho.model.corba.User;
 import com.phcarvalho.view.listener.SearchSharedFileKeyListener;
 import com.phcarvalho.view.util.DialogUtil;
 
@@ -84,6 +85,12 @@ public class SharedFileView extends JPanel {
     }
 
     private void searchFile() {
+    }
+
+    public void download(String name, User sourceUser){
+        SharedFile sharedFile = controller.download(name, sourceUser);
+
+        //TODO resource tips...
     }
 
 //    public void add(Player player){
