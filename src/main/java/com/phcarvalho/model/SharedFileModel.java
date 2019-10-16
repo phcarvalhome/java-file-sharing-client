@@ -32,17 +32,18 @@ public class SharedFileModel {
         downloadedFileModel = DependencyFactory.getSingleton().get(DownloadedFileModel.class);
     }
 
-    public void searchFile(String text) {
+    public void searchSharedFile(String text) {
         ServerService serverService = connectionModel.getServerService();
         FileMetadata[] fileMetadataArray = serverService.search(text);
         User localUser = Configuration.getSingleton().getLocalUser();
 
+        list.clear();
         Arrays.stream(fileMetadataArray)
                 .filter(fileMetadata -> !fileMetadata.user.id.equals(localUser.id))
                 .forEach(fileMetadata -> list.addElement(new FileMetadataAdapter(fileMetadata)));
     }
 
-    public FileData download(FileMetadata fileMetadata){
+    public FileData downloadFileData(FileMetadata fileMetadata){
         String id = fileMetadata.user.id;
         ClientService clientService = connectionModel.getClientService(id);
         FileData fileData = clientService.downloadFileData(fileMetadata);

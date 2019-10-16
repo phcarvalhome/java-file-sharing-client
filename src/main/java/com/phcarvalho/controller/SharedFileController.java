@@ -17,12 +17,12 @@ public class SharedFileController {
         view.getList().setModel(model.getList());
     }
 
-    public void searchFile(String text) {
-        model.searchFile(text);
+    public void searchSharedFile(String text) {
+        model.searchSharedFile(text);
     }
 
-    public FileData download(FileMetadata fileMetadata){
-        return model.download(fileMetadata);
+    public FileData downloadFileData(FileMetadata fileMetadata){
+        return model.downloadFileData(fileMetadata);
     }
 
     public void setView(SharedFileView view) {

@@ -1,7 +1,6 @@
 package com.phcarvalho.model;
 
 import com.phcarvalho.controller.DownloadedFileController;
-import com.phcarvalho.model.corba.FileData;
 import com.phcarvalho.view.vo.FileDataAdapter;
 
 import javax.swing.*;

@@ -9,8 +9,6 @@ import com.phcarvalho.view.util.DialogUtil;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.Random;
 
@@ -24,20 +22,16 @@ public class ConnectionView extends JPanel {
     private MainView mainView;
     private DialogUtil dialogUtil;
     private JButton connectToServerButton;
-    private JLabel userNameLabel;
-    private JLabel userNameValueLabel;
-    private JLabel localHostLabel;
-    private JLabel localHostValueLabel;
+    private JLabel clientIdLabel;
+    private JLabel clientIdValueLabel;
 
     public ConnectionView(ConnectionController controller) {
         super(new GridBagLayout());
         this.controller = controller;
         dialogUtil = DependencyFactory.getSingleton().get(DialogUtil.class);
         connectToServerButton = new JButton(CONNECT_TO_SERVER);
-        userNameLabel = new JLabel("User name:");
-        userNameValueLabel = new JLabel(EMPTY_LABEL);
-        localHostLabel = new JLabel("Host:");
-        localHostValueLabel = new JLabel(EMPTY_LABEL);
+        clientIdLabel = new JLabel("Client ID:");
+        clientIdValueLabel = new JLabel(EMPTY_LABEL);
         initialize();
     }
 
@@ -61,31 +55,20 @@ public class ConnectionView extends JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        add(userNameLabel, gridBagConstraints);
+        add(clientIdLabel, gridBagConstraints);
 
-        userNameValueLabel.setPreferredSize(new Dimension(200, 40));
+        clientIdValueLabel.setPreferredSize(new Dimension(480, 40));
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        add(userNameValueLabel, gridBagConstraints);
-
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        add(localHostLabel, gridBagConstraints);
-
-        localHostValueLabel.setPreferredSize(new Dimension(200, 40));
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        add(localHostValueLabel, gridBagConstraints);
+        add(clientIdValueLabel, gridBagConstraints);
     }
 
     private void connectToServer(){
-        String userName = getUserName();
+        String clientId = getClientId();
 
-        if(userName != null) {
-            User localUser = buildLocalUser(userName);
+        if(clientId != null) {
+            User localUser = buildLocalUser(clientId);
             User remoteUser = new User("SERVER");
 
             controller.connectToServer(localUser, remoteUser);
@@ -93,30 +76,31 @@ public class ConnectionView extends JPanel {
         }
     }
 
-    private String getUserName() {
-        String userName = dialogUtil.showInput("What is the user name?", CONNECT_TO_SERVER);
+    private String getClientId() {
+        String clientId = dialogUtil.showInput("What is the client ID?", CONNECT_TO_SERVER);
 
-        if(userName == null)
+        if(clientId == null)
             return null;
 
-        if(userName.isEmpty())
+        if(clientId.isEmpty())
             return DEFAULT_USER_NAME + new Random().nextInt();
 
-        return userName;
+        return clientId;
     }
 
-    private User buildLocalUser(String userId) {
-        return new User(userId);
+    private User buildLocalUser(String clientId) {
+        return new User(clientId);
     }
 
     public void connectToServerByCallback() {
         User localUser = Configuration.getSingleton().getLocalUser();
 
-        userNameValueLabel.setText(localUser.id);
+        clientIdValueLabel.setText(localUser.id);
         connectToServerButton.setEnabled(false);
-        mainView.getSharedFileView().getSelectGameButton().setEnabled(true);
-        mainView.getSharedFileView().getMessageTextField().setEnabled(true);
-        mainView.getSharedFileView().getSelectGameButton().setEnabled(true);
+        mainView.getSharedFileView().getSelectSharedFileButton().setEnabled(true);
+        mainView.getSharedFileView().getSearchSharedFileField().setEnabled(true);
+        mainView.getSharedFileView().getSelectSharedFileButton().setEnabled(true);
+        mainView.getDownloadedFileView().getDownloadSharedFileButton().setEnabled(true);
 //        dialogUtil.showInformation("The server is connected!", SERVER_CONNECTION);
     }
 
@@ -131,8 +115,7 @@ public class ConnectionView extends JPanel {
     }
 
     public void clear() {
-        userNameValueLabel.setText(EMPTY_LABEL);
-        localHostValueLabel.setText(EMPTY_LABEL);
+        clientIdValueLabel.setText(EMPTY_LABEL);
     }
 
     public void selectSharedDirectory() {

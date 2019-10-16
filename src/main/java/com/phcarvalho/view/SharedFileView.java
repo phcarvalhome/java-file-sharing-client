@@ -16,24 +16,24 @@ public class SharedFileView extends JPanel {
 
     private static final String TITLE = "Shared File";
     private static final String EMPTY_LABEL = "-";
-    private static final int WIDTH = 280;
-    private static final int HEIGHT = 120;
+    private static final int WIDTH = 360;
+    private static final int HEIGHT = 240;
     private static final String DOWNLOAD = "Download";
 
     private SharedFileController controller;
     private MainView mainView;
     private DialogUtil dialogUtil;
     private JList<FileMetadataAdapter> list;
-    private JTextField messageTextField;
-    private JButton selectGameButton;
+    private JTextField searchSharedFileField;
+    private JButton selectSharedFileButton;
 
     public SharedFileView(SharedFileController controller) {
         super(new GridBagLayout());
         this.controller = controller;
         dialogUtil = DependencyFactory.getSingleton().get(DialogUtil.class);
         list = new JList();
-        messageTextField = new JTextField();
-        selectGameButton = new JButton(DOWNLOAD);
+        searchSharedFileField = new JTextField();
+        selectSharedFileButton = new JButton(DOWNLOAD);
         initialize();
     }
 
@@ -58,32 +58,32 @@ public class SharedFileView extends JPanel {
         scrollPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         add(scrollPane, gridBagConstraints);
 
-        messageTextField.setEnabled(false);
-        messageTextField.addKeyListener(new SearchSharedFileKeyListener(() -> searchFile()));
-        messageTextField.setPreferredSize(new Dimension(WIDTH, 30));
+        searchSharedFileField.setEnabled(false);
+        searchSharedFileField.addKeyListener(new SearchSharedFileKeyListener(() -> searchSharedFile()));
+        searchSharedFileField.setPreferredSize(new Dimension(WIDTH, 30));
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        add(messageTextField, gridBagConstraints);
+        add(searchSharedFileField, gridBagConstraints);
 
-        selectGameButton.setEnabled(false);
-        selectGameButton.addActionListener(actionEvent -> download());
-        selectGameButton.setPreferredSize(new Dimension(120, 30));
+        selectSharedFileButton.setEnabled(false);
+        selectSharedFileButton.addActionListener(actionEvent -> download());
+        selectSharedFileButton.setPreferredSize(new Dimension(120, 30));
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        add(selectGameButton, gridBagConstraints);
+        add(selectSharedFileButton, gridBagConstraints);
     }
 
-    private void searchFile() {
-        String text = messageTextField.getText();
+    private void searchSharedFile() {
+        String text = searchSharedFileField.getText();
 
-        controller.searchFile(text);
+        controller.searchSharedFile(text);
     }
 
     public void download(){
         FileMetadata fileMetadata = list.getSelectedValue().getFileMetadata();
-        FileData fileData = controller.download(fileMetadata);
+        FileData fileData = controller.downloadFileData(fileMetadata);
     }
 
     public void setMainView(MainView mainView) {
@@ -94,11 +94,11 @@ public class SharedFileView extends JPanel {
         return list;
     }
 
-    public JTextField getMessageTextField() {
-        return messageTextField;
+    public JTextField getSearchSharedFileField() {
+        return searchSharedFileField;
     }
 
-    public JButton getSelectGameButton() {
-        return selectGameButton;
+    public JButton getSelectSharedFileButton() {
+        return selectSharedFileButton;
     }
 }
