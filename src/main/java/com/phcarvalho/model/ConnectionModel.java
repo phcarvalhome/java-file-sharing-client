@@ -2,6 +2,7 @@ package com.phcarvalho.model;
 
 import com.phcarvalho.controller.ConnectionController;
 import com.phcarvalho.model.configuration.Configuration;
+import com.phcarvalho.model.corba.FileMetadata;
 import com.phcarvalho.model.corba.User;
 import com.phcarvalho.model.corba.client.ClientServiceHelper;
 import com.phcarvalho.model.corba.server.ServerService;
@@ -20,7 +21,13 @@ import org.omg.PortableServer.POAManagerPackage.AdapterInactive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.rmi.RemoteException;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class ConnectionModel {
 
@@ -28,34 +35,24 @@ public class ConnectionModel {
     private ORB orb;
     private POA rootPOA;
     private NamingContext namingContext;
-    //    private IConnectionStrategy connectionStrategy;
-//    private ICommandTemplateFactory commandTemplateFactory;
-//    private ConnectedPlayerModel connectedPlayerModel;
-//    private BoardModel boardModel;
 
     public ConnectionModel(ConnectionController controller) {
         this.controller = controller;
-//        connectionStrategy = DependencyFactory.getSingleton().get(IConnectionStrategy.class);
-//        commandTemplateFactory = DependencyFactory.getSingleton().get(ICommandTemplateFactory.class);
-//        connectedPlayerModel = DependencyFactory.getSingleton().get(ConnectedPlayerModel.class);
-//        boardModel = DependencyFactory.getSingleton().get(BoardModel.class);
     }
 
-    public void connectToServer(User localUser, User remoteUser) throws RemoteException {
+    public void connectToServer(User localUser, User remoteUser) {
         Configuration.getSingleton().setLocalUser(localUser);
         Configuration.getSingleton().setRemoteUser(remoteUser);
-//        connectionStrategy.connectToServer(remoteUser);
-//        commandTemplateFactory.getConnection().connect(new ConnectCommand(remoteUser));
 
-        orb = ORB.init(/*args*/ new String[]{"[-ORBInitialHost Host]"}, null);
+        orb = ORB.init(/*args*/ new String[]{"[-ORBInitialHost" + " Host" + "]"}, null);
 
         try {
             org.omg.CORBA.Object rootPOAObject = orb.resolve_initial_references("RootPOA");
             rootPOA = POAHelper.narrow(rootPOAObject);
-            org.omg.CORBA.Object namingContextObject =   orb.resolve_initial_references("NameService") ;
+            org.omg.CORBA.Object namingContextObject = orb.resolve_initial_references("NameService") ;
             namingContext = NamingContextHelper.narrow(namingContextObject);
             serve(); //TODO isso fica aqui mesmo?
-//            connectToServer();
+            connectToServer();
         } catch (org.omg.CORBA.ORBPackage.InvalidName invalidName) {
             invalidName.printStackTrace();
         }
@@ -63,14 +60,16 @@ public class ConnectionModel {
 
     public void serve(){
         ClientService clientService = new ClientService();
+        String serviceName = Configuration.getSingleton().getLocalUser().id;
 
         try {
             org.omg.CORBA.Object serviceObject = rootPOA.servant_to_reference(clientService);
-            NameComponent[] nameComponentArray = {new NameComponent(Configuration.getSingleton().getId(), "Instance")};
+            NameComponent nameComponent = new NameComponent(serviceName, "Instance");
+            NameComponent[] nameComponentArray = {nameComponent};
 
             namingContext.rebind(nameComponentArray, serviceObject);
             rootPOA.the_POAManager().activate();
-            orb.run();
+            Executors.newSingleThreadExecutor().execute(() -> orb.run());
         } catch (WrongPolicy wrongPolicy) {
             wrongPolicy.printStackTrace();
         } catch (AdapterInactive adapterInactive) {
@@ -87,12 +86,29 @@ public class ConnectionModel {
     }
 
     public void connectToServer(){
-        ServerService serverService = getServerService(Configuration.getSingleton().getServerId());
+
+        if(".".equals(Configuration.getSingleton().getSharedDirectoryPath()))
+            controller.selectSharedDirectory();
+
+        ServerService serverService = getServerService();
+        User localUser = Configuration.getSingleton().getLocalUser();
+
+        try {
+            Path sharedDirectoryPath = Paths.get(Configuration.getSingleton().getSharedDirectoryPath());
+            FileMetadata[] fileMetadataArray = Files.list(sharedDirectoryPath)
+                    .filter(Files::isRegularFile)
+                    .map(path -> new FileMetadata(localUser, path.getFileName().toString()))
+                    .collect(Collectors.toList()).toArray(new FileMetadata[]{});
+
+            serverService.connectToServer(fileMetadataArray);
+            Configuration.getSingleton().setServerConnected(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public ServerService getServerService(String id) {
-        Configuration.getSingleton().getClientService(id);
-
+    public ServerService getServerService() {
+        String id = Configuration.getSingleton().getRemoteUser().id;
         NameComponent[] nameComponentArray = {new NameComponent(id, "Instance")};
 
         try {
@@ -107,7 +123,7 @@ public class ConnectionModel {
             notFound.printStackTrace();
         }
 
-        throw new RuntimeException("...");
+        throw new RuntimeException("getServerService");
     }
 
     public com.phcarvalho.model.corba.client.ClientService getClientService(String id) {
@@ -156,10 +172,5 @@ public class ConnectionModel {
 
 //    public void disconnectByCallback(DisconnectCommand disconnectCommand) {
 //        controller.disconnectByCallback(disconnectCommand);
-//    }
-//
-//    public void clear() {
-//        Configuration.getSingleton().clear();
-//        controller.clear();
 //    }
 }

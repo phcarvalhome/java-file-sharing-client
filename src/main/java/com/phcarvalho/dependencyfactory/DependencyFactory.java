@@ -45,10 +45,10 @@ public class DependencyFactory {
 //        dependencyMap.put(StartingPositionConfigurationRegistry.class, new StartingPositionConfigurationRegistry());
 
 //        buildBoardMVC();
-        buildSharedFileMVC();
-        buildDownloadedFileMVC();
-//        buildGameMVC();
         buildConnectionMVC();
+        buildDownloadedFileMVC();
+        buildSharedFileMVC();
+//        buildGameMVC();
 //        buildChatMVC();
         buildMainMVC();
 
@@ -67,19 +67,19 @@ public class DependencyFactory {
 //        boardController.setModel(boardModel);
 //        dependencyMap.put(BoardView.class, boardView);
 //        dependencyMap.put(BoardModel.class, boardModel);
+
 //    }
 
-    private void buildSharedFileMVC() {
-        SharedFileController sharedFileController = new SharedFileController();
-        SharedFileView sharedFileView = new SharedFileView(sharedFileController);
-        SharedFileModel sharedFileModel = new SharedFileModel(sharedFileController);
+    private void buildConnectionMVC() {
+        ConnectionController connectionController = new ConnectionController();
+        ConnectionView connectionView = new ConnectionView(connectionController);
+        ConnectionModel connectionModel = new ConnectionModel(connectionController);
 
-        sharedFileController.setView(sharedFileView);
-        sharedFileController.setModel(sharedFileModel);
-        sharedFileController.initializeList();
-        dependencyMap.put(SharedFileView.class, sharedFileView);
-        dependencyMap.put(SharedFileModel.class, sharedFileModel);
-//        get(IConnectionHandlerStrategy.class).setSharedFileModel(sharedFileModel);
+        connectionController.setView(connectionView);
+        connectionController.setModel(connectionModel);
+        dependencyMap.put(ConnectionView.class, connectionView);
+        dependencyMap.put(ConnectionModel.class, connectionModel);
+    //        get(IConnectionHandlerStrategy.class).setConnectionModel(connectionModel);
     }
 
     private void buildDownloadedFileMVC() {
@@ -95,6 +95,18 @@ public class DependencyFactory {
 //        get(IConnectionHandlerStrategy.class).setDownloadedFileModel(downloadedFileModel);
     }
 
+    private void buildSharedFileMVC() {
+        SharedFileController sharedFileController = new SharedFileController();
+        SharedFileView sharedFileView = new SharedFileView(sharedFileController);
+        SharedFileModel sharedFileModel = new SharedFileModel(sharedFileController);
+
+        sharedFileController.setView(sharedFileView);
+        sharedFileController.setModel(sharedFileModel);
+        sharedFileController.initializeList();
+        dependencyMap.put(SharedFileView.class, sharedFileView);
+        dependencyMap.put(SharedFileModel.class, sharedFileModel);
+//        get(IConnectionHandlerStrategy.class).setSharedFileModel(sharedFileModel);
+    }
 //    private void buildGameMVC() {
 //        GameController gameController = new GameController();
 //        GameView gameView = new GameView(gameController);
@@ -106,19 +118,8 @@ public class DependencyFactory {
 //        dependencyMap.put(GameView.class, gameView);
 //        dependencyMap.put(GameModel.class, gameModel);
 ////        get(IConnectionHandlerStrategy.class).setGameModel(gameModel);
+
 //    }
-
-    private void buildConnectionMVC() {
-        ConnectionController connectionController = new ConnectionController();
-        ConnectionView connectionView = new ConnectionView(connectionController);
-        ConnectionModel connectionModel = new ConnectionModel(connectionController);
-
-        connectionController.setView(connectionView);
-        connectionController.setModel(connectionModel);
-        dependencyMap.put(ConnectionView.class, connectionView);
-        dependencyMap.put(ConnectionModel.class, connectionModel);
-//        get(IConnectionHandlerStrategy.class).setConnectionModel(connectionModel);
-    }
 
 //    private void buildChatMVC() {
 //        ChatController chatController = new ChatController();

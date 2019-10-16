@@ -1,6 +1,6 @@
 struct User;
-struct SharedFile;
-struct SharedFileList;
+struct FileData;
+struct FileMetadata;
 
 module com {
 
@@ -11,34 +11,33 @@ module com {
             module corba {
 
                 struct User {
-                    string name;
-                    string host;
-                    short port;
+                    string id;
                 };
 
-                struct SharedFile {
+                struct FileMetadata {
                     User user;
                     string name;
-                    string extension;
-                    string content;
                 };
 
-                struct SharedFileList {
-                    sequence<SharedFile> sharedFileList;
+                typedef sequence<FileMetadata> FileMetadataArray;
+
+                struct FileData {
+                    FileMetadata metadata;
+                    string content;
                 };
 
                 module client {
 
                     interface ClientService {
-                        SharedFile downloadSharedFile(in string name);
+                        FileData downloadFileData(in FileMetadata fileMetadata);
                     };
                 };
 
                 module server {
 
                     interface ServerService {
-                        void sendSharedFileList(in SharedFileList sharedFileList);
-                        SharedFileList search(in string name);
+                        void connectToServer(in FileMetadataArray fileMetadataArray);
+                        FileMetadataArray search(in string text);
                     };
                 };
             };

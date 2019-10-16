@@ -2,10 +2,11 @@ package com.phcarvalho.view;
 
 import com.phcarvalho.controller.SharedFileController;
 import com.phcarvalho.dependencyfactory.DependencyFactory;
-import com.phcarvalho.model.corba.SharedFile;
-import com.phcarvalho.model.corba.User;
+import com.phcarvalho.model.corba.FileData;
+import com.phcarvalho.model.corba.FileMetadata;
 import com.phcarvalho.view.listener.SearchSharedFileKeyListener;
 import com.phcarvalho.view.util.DialogUtil;
+import com.phcarvalho.view.vo.FileMetadataAdapter;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -17,25 +18,22 @@ public class SharedFileView extends JPanel {
     private static final String EMPTY_LABEL = "-";
     private static final int WIDTH = 280;
     private static final int HEIGHT = 120;
+    private static final String DOWNLOAD = "Download";
 
     private SharedFileController controller;
     private MainView mainView;
     private DialogUtil dialogUtil;
-    private JList<SharedFile> list;
-//    private JPanel bottomPanel;
-//    private JLabel turnPlayerLabel;
-//    private JLabel turnPlayerValueLabel;
+    private JList<FileMetadataAdapter> list;
     private JTextField messageTextField;
+    private JButton selectGameButton;
 
     public SharedFileView(SharedFileController controller) {
         super(new GridBagLayout());
         this.controller = controller;
         dialogUtil = DependencyFactory.getSingleton().get(DialogUtil.class);
         list = new JList();
-//        bottomPanel = new JPanel(new GridBagLayout());
-//        turnPlayerLabel = new JLabel("Turn player:");
-//        turnPlayerValueLabel = new JLabel(EMPTY_LABEL);
         messageTextField = new JTextField();
+        selectGameButton = new JButton(DOWNLOAD);
         initialize();
     }
 
@@ -49,31 +47,16 @@ public class SharedFileView extends JPanel {
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
-        list.setEnabled(false);
+//        list.setEnabled(false);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(list);
 
         scrollPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         add(scrollPane, gridBagConstraints);
-
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 1;
-//        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-//        add(bottomPanel, gridBagConstraints);
-
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 0;
-//        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-//        bottomPanel.add(turnPlayerLabel, gridBagConstraints);
-
-//        turnPlayerValueLabel.setPreferredSize(new Dimension(140, 30));
-//        gridBagConstraints.gridx = 1;
-//        gridBagConstraints.gridy = 0;
-//        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-//        bottomPanel.add(turnPlayerValueLabel, gridBagConstraints);
 
         messageTextField.setEnabled(false);
         messageTextField.addKeyListener(new SearchSharedFileKeyListener(() -> searchFile()));
@@ -82,49 +65,26 @@ public class SharedFileView extends JPanel {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
         add(messageTextField, gridBagConstraints);
+
+        selectGameButton.setEnabled(false);
+        selectGameButton.addActionListener(actionEvent -> download());
+        selectGameButton.setPreferredSize(new Dimension(120, 30));
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
+        add(selectGameButton, gridBagConstraints);
     }
 
     private void searchFile() {
+        String text = messageTextField.getText();
+
+        controller.searchFile(text);
     }
 
-    public void download(String name, User sourceUser){
-        SharedFile sharedFile = controller.download(name, sourceUser);
-
-        //TODO resource tips...
+    public void download(){
+        FileMetadata fileMetadata = list.getSelectedValue().getFileMetadata();
+        FileData fileData = controller.download(fileMetadata);
     }
-
-//    public void add(Player player){
-//        controller.add(player);
-//    }
-//
-//    public void setTurnPlayer(Player turnPlayer) {
-//        int turnPlayerIndex = controller.getPlayerIndex(turnPlayer);
-//
-//        list.setSelectedIndex(turnPlayerIndex);
-//        list.setSelectionBackground(turnPlayer.getColor().getColor());
-//        turnPlayerValueLabel.setText(turnPlayer.toString());
-//    }
-//
-//    public void setReadyPlayer(Player readyPlayer) {
-////        int readyPlayerIndex = controller.getPlayerIndex(readyPlayer);
-////        Player player = list.getModel().getElementAt(readyPlayerIndex);
-////
-////        player.getUser().setName(READY_SYMBOL + player.getUser().getName());
-////        list.repaint();
-//    }
-//
-//    public void removeByCallback(Player player) {
-//        String message = String.join("",
-//                "The player ", player.getUser().getName(), " is DISCONNECTED!");
-//
-////        list.repaint();
-//        mainView.getChatView().displaySystemMessage(message);
-//    }
-//
-//    public void reset() {
-//        controller.clear();
-//        turnPlayerValueLabel.setText(EMPTY_LABEL);
-//    }
 
     public void setMainView(MainView mainView) {
         this.mainView = mainView;
@@ -132,5 +92,13 @@ public class SharedFileView extends JPanel {
 
     public JList getList() {
         return list;
+    }
+
+    public JTextField getMessageTextField() {
+        return messageTextField;
+    }
+
+    public JButton getSelectGameButton() {
+        return selectGameButton;
     }
 }

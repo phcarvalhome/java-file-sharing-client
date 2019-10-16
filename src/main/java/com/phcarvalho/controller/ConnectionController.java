@@ -14,7 +14,7 @@ public class ConnectionController {
     public ConnectionController() {
     }
 
-    public void connectToServer(User localUser, User remoteUser) throws RemoteException {
+    public void connectToServer(User localUser, User remoteUser) {
         model.connectToServer(localUser, remoteUser);
     }
 
@@ -40,5 +40,9 @@ public class ConnectionController {
 
     public void setModel(ConnectionModel model) {
         this.model = model;
+    }
+
+    public void selectSharedDirectory() {
+        view.selectSharedDirectory();
     }
 }

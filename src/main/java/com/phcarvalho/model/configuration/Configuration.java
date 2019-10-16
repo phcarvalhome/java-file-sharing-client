@@ -21,19 +21,12 @@ public class Configuration {
     private User localUser;
     private User remoteUser;
     private boolean serverConnected;
+    private String sharedDirectoryPath;
     private Map<String, ClientService> clientServiceMap;
 
     private Configuration() {
         serverConnected = false;
         clientServiceMap = new HashMap<>();
-    }
-
-    public String getId(){
-        return localUser.name + "::" + localUser.host + "::" + localUser.port;
-    }
-
-    public String getServerId(){
-        return remoteUser.name + "::" + remoteUser.host + "::" + remoteUser.port;
     }
 
     public ClientService getClientService(String id){
@@ -74,5 +67,17 @@ public class Configuration {
 
     public void setServerConnected(boolean serverConnected) {
         this.serverConnected = serverConnected;
+    }
+
+    public String getSharedDirectoryPath() {
+
+        if(sharedDirectoryPath == null)
+            return ".";
+
+        return sharedDirectoryPath;
+    }
+
+    public void setSharedDirectoryPath(String sharedDirectoryPath) {
+        this.sharedDirectoryPath = sharedDirectoryPath;
     }
 }

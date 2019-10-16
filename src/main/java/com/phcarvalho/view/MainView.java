@@ -13,32 +13,20 @@ public class MainView extends JFrame {
 
     private MainController controller;
     private JPanel mainPanel;
-    private JPanel topLeftPanel;
-    private JPanel topRightPanel;
-    private JPanel bottomLeftPanel;
-//    private JPanel bottomRightPanel;
-//    private BoardView boardView;
-//    private ConnectedPlayerView connectedPlayerView;
+    private JPanel centerPanel;
+    private SharedDirectoryPathView sharedDirectoryPathView;
     private SharedFileView sharedFileView;
     private DownloadedFileView downloadedFileView;
-//    private GameView gameView;
     private ConnectionView connectionView;
-//    private ChatView chatView;
 
     public MainView(MainController controller) {
         this.controller = controller;
         mainPanel = new JPanel(new GridBagLayout());
-        topLeftPanel = new JPanel(new GridBagLayout());
-        topRightPanel = new JPanel(new GridBagLayout());
-        bottomLeftPanel = new JPanel(new GridBagLayout());
-//        bottomRightPanel = new JPanel(new GridBagLayout());
-//        boardView = DependencyFactory.getSingleton().get(BoardView.class);
-//        connectedPlayerView = DependencyFactory.getSingleton().get(ConnectedPlayerView.class);
+        centerPanel = new JPanel(new GridBagLayout());
+        sharedDirectoryPathView = new SharedDirectoryPathView();
         sharedFileView = DependencyFactory.getSingleton().get(SharedFileView.class);
         downloadedFileView = DependencyFactory.getSingleton().get(DownloadedFileView.class);
-//        gameView = DependencyFactory.getSingleton().get(GameView.class);
         connectionView = DependencyFactory.getSingleton().get(ConnectionView.class);
-//        chatView = DependencyFactory.getSingleton().get(ChatView.class);
         initialize();
     }
 
@@ -48,60 +36,27 @@ public class MainView extends JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        mainPanel.add(topLeftPanel, gridBagConstraints);
+        mainPanel.add(sharedDirectoryPathView, gridBagConstraints);
 
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 0;
-//        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-//        topLeftPanel.add(boardView, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
+        mainPanel.add(centerPanel, gridBagConstraints);
+
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
+        centerPanel.add(sharedFileView, gridBagConstraints);
 
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        mainPanel.add(topRightPanel, gridBagConstraints);
-
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 0;
-//        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-//        topRightPanel.add(gameView, gridBagConstraints);
-
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 1;
-//        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-//        topRightPanel.add(connectedPlayerView, gridBagConstraints);
+        centerPanel.add(downloadedFileView, gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        topRightPanel.add(sharedFileView, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        topRightPanel.add(downloadedFileView, gridBagConstraints);
-
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 2;
-//        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-//        topRightPanel.add(chatView, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        mainPanel.add(bottomLeftPanel, gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new Insets(2, 4, 2, 4);
-        bottomLeftPanel.add(connectionView, gridBagConstraints);
-
-//        gridBagConstraints.gridx = 1;
-//        gridBagConstraints.gridy = 1;
-//        mainPanel.add(bottomRightPanel, gridBagConstraints);
-//
-//        gridBagConstraints.gridx = 0;
-//        gridBagConstraints.gridy = 0;
-//        bottomRightPanel.add(connectionView, gridBagConstraints);
+        mainPanel.add(connectionView, gridBagConstraints);
 
         addWindowListener(new MainWindowAdapter(() -> disconnect()));
         setTitle(TITLE);
@@ -117,13 +72,9 @@ public class MainView extends JFrame {
         connectionView.disconnect();
     }
 
-//    public BoardView getBoardView() {
-//        return boardView;
-//    }
-//
-//    public ConnectedPlayerView getConnectedPlayerView() {
-//        return connectedPlayerView;
-//    }
+    public SharedDirectoryPathView getSharedDirectoryPathView() {
+        return sharedDirectoryPathView;
+    }
 
     public SharedFileView getSharedFileView() {
         return sharedFileView;
@@ -133,15 +84,7 @@ public class MainView extends JFrame {
         return downloadedFileView;
     }
 
-//    public GameView getGameView() {
-//        return gameView;
-//    }
-
     public ConnectionView getConnectionView() {
         return connectionView;
     }
-
-//    public ChatView getChatView() {
-//        return chatView;
-//    }
 }

@@ -1,8 +1,8 @@
 package com.phcarvalho.controller;
 
 import com.phcarvalho.model.SharedFileModel;
-import com.phcarvalho.model.corba.SharedFile;
-import com.phcarvalho.model.corba.User;
+import com.phcarvalho.model.corba.FileData;
+import com.phcarvalho.model.corba.FileMetadata;
 import com.phcarvalho.view.SharedFileView;
 
 public class SharedFileController {
@@ -17,25 +17,13 @@ public class SharedFileController {
         view.getList().setModel(model.getList());
     }
 
-    public SharedFile download(String name, User sourceUser){
-        return model.download(name, sourceUser);
+    public void searchFile(String text) {
+        model.searchFile(text);
     }
 
-//    public void add(Player player) {
-//        model.add(player);
-//    }
-//
-//    public void removeByCallback(Player player) {
-//        view.removeByCallback(player);
-//    }
-//
-//    public int getPlayerIndex(Player player) {
-//        return model.getPlayerIndex(player);
-//    }
-//
-//    public void clear() {
-//        model.clear();
-//    }
+    public FileData download(FileMetadata fileMetadata){
+        return model.download(fileMetadata);
+    }
 
     public void setView(SharedFileView view) {
         this.view = view;
