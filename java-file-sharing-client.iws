@@ -3,13 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6b63d061-30d8-465e-9635-74b577ea620c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/java-file-sharing-client.iws" beforeDir="false" afterPath="$PROJECT_DIR$/java-file-sharing-client.iws" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/phcarvalho/controller/SharedFileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/phcarvalho/controller/SharedFileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/phcarvalho/model/DownloadedFileModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/phcarvalho/model/DownloadedFileModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/phcarvalho/model/SharedFileModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/phcarvalho/model/SharedFileModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/ConnectionView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/ConnectionView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/DownloadedFileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/DownloadedFileView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/SharedDirectoryPathView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/SharedDirectoryPathView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/SharedFileView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/phcarvalho/view/SharedFileView.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -100,7 +93,9 @@
       <workItem from="1571021458690" duration="3954000" />
       <workItem from="1571102780721" duration="22238000" />
       <workItem from="1571207724284" duration="4448000" />
-      <workItem from="1571233683747" duration="2179000" />
+      <workItem from="1571233683747" duration="2912000" />
+      <workItem from="1573081327190" duration="2765000" />
+      <workItem from="1573092343606" duration="1218000" />
     </task>
     <servers />
   </component>
