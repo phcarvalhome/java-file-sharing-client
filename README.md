@@ -9,7 +9,7 @@ Distributed Java application client using Corba and Swing UI.
 ### Computer Engineering - Parallel and Distributed Programming 
 ### Project of CORBA
 
-- Objective: Implement a P2P file sharing system in CORBA
+- Objective: Implement a P2P file sharing system in CORBA.
 
 - Basic Features: 
   - Each Client is a server that shares files stored in a local folder.
